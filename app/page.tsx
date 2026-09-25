@@ -8,15 +8,32 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_QFMzIAr9q6jeM8o0yDKr7A_A5KZU9Pd"
 );
 const logo = "https://raw.githubusercontent.com/lucviscard-prog/qualific.estetic/main/public/logo-qualificar-correta.webp";
+const FIPE="https://parallelum.com.br/fipe/api/v1/carros";
 
 type Vehicle={id:string;make:string;model:string;year:number;color:string;plate:string;category:string;observations:string|null};
 type Service={id:string;name:string;description:string|null;duration_minutes:number;requires_evaluation:boolean};
 type Booking={id:string;booking_date:string;start_time:string;end_time:string;status:string;delivery_mode:string;final_price:number|null;vehicle_id:string;observations:string|null};
+type Option={code:string;name:string};
 
 const money=(n:number|null)=>n==null?"A definir":new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(n));
 const time=(s:string)=>s.slice(0,5);
 const status=(s:string)=>({REQUESTED:"Solicitado",CONFIRMED:"Confirmado",CUSTOMER_ARRIVED:"Cliente chegou",IN_SERVICE:"Em atendimento",AWAITING_PICKUP:"Aguardando retirada",COMPLETED:"Concluído",CANCELLED:"Cancelado",RESCHEDULED:"Reagendado",NO_SHOW:"Não compareceu"} as Record<string,string>)[s]||s;
 const date=(s:string)=>new Date(s+"T12:00:00").toLocaleDateString("pt-BR");
+const cleanDigits=(s:string)=>s.replace(/\D/g,"");
+const validPhone=(s:string)=>{const n=cleanDigits(s);return (n.length===10||n.length===11)&&!/^(\d)\1+$/.test(n)&&n.slice(2).startsWith("9")};
+const validCep=(s:string)=>/^\d{8}$/.test(cleanDigits(s));
+const validCpf=(value:string)=>{
+ const cpf=cleanDigits(value); if(cpf.length!==11||/^(\d)\1+$/.test(cpf))return false;
+ let sum=0; for(let i=0;i<9;i++)sum+=Number(cpf[i])*(10-i); let d=(sum*10)%11;if(d===10)d=0;if(d!==Number(cpf[9]))return false;
+ sum=0;for(let i=0;i<10;i++)sum+=Number(cpf[i])*(11-i);d=(sum*10)%11;if(d===10)d=0;return d===Number(cpf[10]);
+};
+const colors=["Preto","Branco","Prata","Cinza","Grafite","Vermelho","Azul","Verde","Amarelo","Laranja","Marrom","Bege","Dourado","Roxo","Vinho","Outra"];
+function Combo({label,value,placeholder,options,onChange,disabled=false}:{label:string;value:string;placeholder:string;options:Option[];onChange:(v:string)=>void;disabled?:boolean}){
+ const [open,setOpen]=useState(false);
+ const filtered=options.filter(o=>o.name.toLowerCase().includes(value.toLowerCase())).slice(0,12);
+ return <div className="field combo"><label>{label}</label><input value={value} disabled={disabled} placeholder={placeholder} onFocus={()=>setOpen(true)} onChange={e=>{onChange(e.target.value);setOpen(true)}} onBlur={()=>setTimeout(()=>setOpen(false),150)} autoComplete="off"/>{open&&!disabled&&filtered.length>0&&<div className="comboMenu">{filtered.map(o=><button type="button" key={o.code} onMouseDown={e=>e.preventDefault()} onClick={()=>{onChange(o.name);setOpen(false)}}>{o.name}</button>)}</div>}</div>
+}
+
 
 export default function Home(){
  const [session,setSession]=useState<Session|null>(null),[loading,setLoading]=useState(true);
