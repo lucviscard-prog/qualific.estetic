@@ -138,11 +138,28 @@ export default function Home(){
  async function cancel(id:string){if(!confirm("Cancelar este agendamento?"))return;setBusy(true);const r=await supabase.rpc("cancel_customer_booking",{p_booking_id:id,p_reason:"Cancelado pelo cliente"});if(r.error)setError(r.error.message);else await load();setBusy(false)}
  async function updateBookingStatus(id:string,next:string){
   setBusy(true);setError("");
-  const r=await supabase.from("bookings").update({status:next}).eq("id",id);
-  if(r.error)setError(r.error.message);else{
-    setAdminBookings(adminBookings.map(b=>b.id===id?{...b,status:next}:b));
-    setBookings(bookings.map(b=>b.id===id?{...b,status:next}:b));
-  }
+  let r:any;
+  if(next==="CONFIRMED") r=await supabase.from("bookings").update({status:"CONFIRMED"}).eq("id",id);
+  else if(next==="IN_SERVICE") r=await supabase.rpc("staff_start_service",{p_booking_id:id});
+  else if(next==="AWAITING_PICKUP") r=await supabase.rpc("staff_finish_service",{p_booking_id:id});
+  else {setBusy(false);return}
+  if(r.error)setError(r.error.message);else await refreshAdmin();
+  setBusy(false);
+ }
+ async function doCheckin(e:React.FormEvent){
+  e.preventDefault();if(!checkinBooking)return;setBusy(true);setError("");
+  const km=Number(kmEntry);
+  if(!Number.isInteger(km)||km<0){setError("Informe a quilometragem de entrada.");setBusy(false);return}
+  const r=await supabase.rpc("staff_checkin_booking",{p_booking_id:checkinBooking.id,p_km_entry:km,p_entry_notes:entryNotes||null});
+  if(r.error)setError(r.error.message);else{setCheckinBooking(null);setKmEntry("");setEntryNotes("");await refreshAdmin()}
+  setBusy(false);
+ }
+ async function doComplete(e:React.FormEvent){
+  e.preventDefault();if(!completeBooking)return;setBusy(true);setError("");
+  const km=Number(kmExit);
+  if(!Number.isInteger(km)||km<0){setError("Informe a quilometragem de saída.");setBusy(false);return}
+  const r=await supabase.rpc("staff_complete_attendance",{p_booking_id:completeBooking.id,p_km_exit:km,p_exit_notes:exitNotes||null});
+  if(r.error)setError(r.error.message);else{setCompleteBooking(null);setKmExit("");setExitNotes("");await refreshAdmin()}
   setBusy(false);
  }
  async function refreshAdmin(dateValue=adminDate){
