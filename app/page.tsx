@@ -43,7 +43,9 @@ export default function Home(){
  const [message,setMessage]=useState(""),[error,setError]=useState(""),[busy,setBusy]=useState(false);
  const [customerId,setCustomerId]=useState(""),[customerName,setCustomerName]=useState(""),[vehicles,setVehicles]=useState<Vehicle[]>([]),[services,setServices]=useState<Service[]>([]),[bookings,setBookings]=useState<Booking[]>([]);
  const [view,setView]=useState<"home"|"agenda"|"garage"|"history"|"profile"|"admin">("home");
- const [isStaff,setIsStaff]=useState(false),[adminBookings,setAdminBookings]=useState<AdminBooking[]>([]),[adminDate,setAdminDate]=useState(new Date().toISOString().slice(0,10));\n const [checkinBooking,setCheckinBooking]=useState<AdminBooking|null>(null),[kmEntry,setKmEntry]=useState(""),[entryNotes,setEntryNotes]=useState("");\n const [completeBooking,setCompleteBooking]=useState<AdminBooking|null>(null),[kmExit,setKmExit]=useState(""),[exitNotes,setExitNotes]=useState("");
+ const [isStaff,setIsStaff]=useState(false),[adminBookings,setAdminBookings]=useState<AdminBooking[]>([]),[adminDate,setAdminDate]=useState(new Date().toISOString().slice(0,10));
+ const [checkinBooking,setCheckinBooking]=useState<AdminBooking|null>(null),[kmEntry,setKmEntry]=useState(""),[entryNotes,setEntryNotes]=useState("");
+ const [completeBooking,setCompleteBooking]=useState<AdminBooking|null>(null),[kmExit,setKmExit]=useState(""),[exitNotes,setExitNotes]=useState("");
  const [vehicleId,setVehicleId]=useState(""),[serviceId,setServiceId]=useState(""),[bookingDate,setBookingDate]=useState(""),[quote,setQuote]=useState<any>(null),[slots,setSlots]=useState<any[]>([]),[slot,setSlot]=useState("");
  const [newVehicle,setNewVehicle]=useState(false);
  const [vf,setVf]=useState({make:"",model:"",year:String(new Date().getFullYear()),color:"",plate:"",category:"HATCH",observations:""});
