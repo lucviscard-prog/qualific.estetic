@@ -87,7 +87,7 @@ export default function Home(){
    setIsStaff(staff);
    if(staff){
      const {data:ab}=await supabase.from("bookings").select("id,booking_date,start_time,end_time,status,delivery_mode,final_price,vehicle_id,observations,customer:customers(full_name,whatsapp),vehicle:vehicles(make,model,plate)").eq("booking_date",adminDate).order("start_time");
-     setAdminBookings((ab||[]) as AdminBooking[]);
+     setAdminBookings((ab||[]) as unknown as AdminBooking[]);
    }
    setVehicles(v.data||[]);setServices(s.data||[]);setBookings(b.data||[]);
    if(!vehicleId&&v.data?.[0])setVehicleId(v.data[0].id);
@@ -146,7 +146,7 @@ export default function Home(){
   setBusy(false);
  }
  async function refreshAdmin(dateValue=adminDate){
-  setBusy(true);const {data,error:r}=await supabase.from("bookings").select("id,booking_date,start_time,end_time,status,delivery_mode,final_price,vehicle_id,observations,customer:customers(full_name,whatsapp),vehicle:vehicles(make,model,plate)").eq("booking_date",dateValue).order("start_time");if(!r)setAdminBookings((data||[]) as AdminBooking[]);setBusy(false);
+  setBusy(true);const {data,error:r}=await supabase.from("bookings").select("id,booking_date,start_time,end_time,status,delivery_mode,final_price,vehicle_id,observations,customer:customers(full_name,whatsapp),vehicle:vehicles(make,model,plate)").eq("booking_date",dateValue).order("start_time");if(!r)setAdminBookings((data||[]) as unknown as AdminBooking[]);setBusy(false);
  }
  async function logout(){await supabase.auth.signOut();setSession(null)}
  const active=useMemo(()=>bookings.filter(x=>!["CANCELLED","COMPLETED","NO_SHOW"].includes(x.status)),[bookings]);
@@ -159,7 +159,7 @@ export default function Home(){
    <h2>{mode==="login"?"Bem-vindo de volta.":"Crie sua garagem."}</h2><p>{mode==="login"?"Acesse seus veículos e agendamentos.":"Cadastre seus dados para começar."}</p>
    <form onSubmit={auth}>
     {mode==="register"&&<><div className="field"><label>Nome completo</label><input required value={name} onChange={e=>setName(e.target.value)}/></div><div className="formGrid"><div className="field"><label>WhatsApp</label><input required inputMode="tel" maxLength={15} value={whatsapp} onChange={e=>setWhatsapp(e.target.value.replace(/[^0-9()+ -]/g,""))}/></div><div className="field"><label>CPF</label><input required inputMode="numeric" maxLength={14} value={cpf} onChange={e=>setCpf(e.target.value)}/></div><div className="field"><label>Data de nascimento</label><input required type="date" value={birth} onChange={e=>setBirth(e.target.value)}/></div><div className="field"><label>CEP</label><input required inputMode="numeric" maxLength={9} value={cep} onChange={e=>lookupCep(e.target.value)} placeholder="00000-000"/>{cepLoading&&<small>Consultando CEP...</small>}{cepError&&<small className="fieldError">{cepError}</small>}{cepInfo.city&&<small className="cepOk">{cepInfo.street}, {cepInfo.neighborhood} · {cepInfo.city}/{cepInfo.state}</small>}</div></div></>}
-    <div className="field"><label>E-mail</label><input required type="email" value={email} onChange={e=>setEmail(e.target.value)}/></div><div className="field"><label>Senha</label><input required minLength={6} type="password" value={password} onChange={e=>setPassword(e.target.value)}/></div>
+    <div className="field"><label>E-mail</label><input required type="email" value={email} onChange={e=>setEmail(e.target.value)}/></div><div className="field"><label>Senha</label><input required minLength={8} type="password" value={password} onChange={e=>setPassword(e.target.value)}/></div>
     {mode==="register"&&<div className="checks"><label><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)}/> Aceito os Termos de Uso e a Política de Privacidade.</label><label><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)}/> Quero receber novidades e ofertas.</label></div>}
     {error&&<div className="error">{error}</div>}{message&&<div className="success">{message}</div>}<button className="btn primary full" disabled={busy}>{busy?"Processando...":mode==="login"?"Entrar na garagem":"Criar minha conta"}</button>
    </form>
