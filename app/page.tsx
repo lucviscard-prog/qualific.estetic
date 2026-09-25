@@ -31,7 +31,7 @@ const validCpf=(value:string)=>{
 const colors=["Preto","Branco","Prata","Cinza","Grafite","Vermelho","Azul","Verde","Amarelo","Laranja","Marrom","Bege","Dourado","Roxo","Vinho","Outra"];
 function Combo({label,value,placeholder,options,onChange,disabled=false}:{label:string;value:string;placeholder:string;options:Option[];onChange:(v:string)=>void;disabled?:boolean}){
  const [open,setOpen]=useState(false);
- const filtered=options.filter(o=>o.name.toLowerCase().includes(value.toLowerCase())).slice(0,12);
+ const safeValue=value||""; const filtered=(options||[]).filter(o=>String(o?.name||"").toLowerCase().includes(safeValue.toLowerCase())).slice(0,12);
  return <div className="field combo"><label>{label}</label><input value={value} disabled={disabled} placeholder={placeholder} onFocus={()=>setOpen(true)} onChange={e=>{onChange(e.target.value);setOpen(true)}} onBlur={()=>setTimeout(()=>setOpen(false),150)} autoComplete="off"/>{open&&!disabled&&filtered.length>0&&<div className="comboMenu">{filtered.map(o=><button type="button" key={o.code} onMouseDown={e=>e.preventDefault()} onClick={()=>{onChange(o.name);setOpen(false)}}>{o.name}</button>)}</div>}</div>
 }
 
