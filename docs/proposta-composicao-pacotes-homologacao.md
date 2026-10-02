@@ -19,5 +19,5 @@
 - Não somar a duração isolada de cada serviço para representar automaticamente o pacote: muitas tarefas são compartilhadas.
 - Preservar os preços oficiais (Hatch/Sedan/SUV/Caminhonete) e a lógica de valor-base sujeito a acréscimo excepcional mediante aprovação do cliente.
 - Todos os pacotes continuam bloqueados para reserva até aprovação explícita de composição e duração pelo perfil ADMIN/MANAGER, na rota /homologacao/pacotes.
-- O agendamento atual não atravessa o intervalo de 11:50 a 12:50. Um pacote de 360 minutos não cabe em uma janela contínua entre 08:00 e 18:00. Para liberá-lo será necessário, separadamente, projetar agendamentos de serviço que atravessem pausa ou ocupem múltiplos dias, sem simular duração reduzida.
+- A agenda operacional atual permanece com sua regra anterior. A agenda **v2 exclusiva da homologação conectada** permite atendimento que atravessa a pausa de 11:50 a 12:50, somando-a à previsão de entrega e à ocupação do Box 01. Exemplo: Ultimate de 360 minutos começando às 08:00 termina às 15:00 (6h efetivas + 1h de pausa). Só será liberado após aprovação da composição e duração pelos sócios/gestão; não há publicação em produção.
 - As durações propostas são parâmetros preliminares de agenda, não promessa de conclusão.
