@@ -13,3 +13,6 @@
 
 /* Reviewable package proposals */
 .hv-proposal{border:1px solid #e7dbb6;background:#fffcf2;border-radius:12px;padding:15px;margin-bottom:17px}.hv-proposalTitle{display:flex;align-items:center;justify-content:space-between;gap:18px}.hv-proposalTitle h4{font:600 22px "Playfair Display",Georgia,serif;margin:6px 0}.hv-proposalTitle p{margin:4px 0;font-size:11px;color:#6b746c}.hv-proposalPending{margin:12px 0 0;font-size:12px;color:#695f47;line-height:1.6;border-top:1px solid #e7dbb6;padding-top:11px}@media(max-width:540px){.hv-proposalTitle{display:block}.hv-proposalTitle button{margin-top:12px}}
+
+/* Time preview for break-aware booking */
+.hv-realSlots button small{display:block;margin-top:4px;font-size:10px;font-weight:600;opacity:.78}.hv-realSlots button.active small{color:#fff}.hv-realSlots button{line-height:1.25;min-height:52px}
