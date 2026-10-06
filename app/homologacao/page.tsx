@@ -47,7 +47,7 @@ export default function Homologacao(){
  return <div className="hv">
   <aside className="hv-side">
    <div className="hv-logo"><img src={logo} alt="Qualificar Estética Automotiva"/><span>ESTETIC · STUDIO</span></div>
-   <div className="hv-demoTag"><b>HOMOLOGAÇÃO GERAL</b><span>Ambiente demonstrativo v1</span></div><a className="hv-liveLink" href="/homologacao/cliente-real">Testar área conectada ↗</a><a className="hv-liveLink" href="/homologacao/pacotes">Configurar pacotes (gestão) ↗</a>
+   <div className="hv-demoTag"><b>HOMOLOGAÇÃO GERAL</b><span>Ambiente demonstrativo v1</span></div><a className="hv-liveLink" href="/homologacao/cliente-real">Testar área conectada ↗</a><a className="hv-liveLink" href="/homologacao/pacotes">Configurar pacotes (gestão) ↗</a><a className="hv-liveLink" href="/homologacao/operacao-real">Abrir operação conectada ↗</a>
    <div className="hv-areaNav">{areas.map(a=><button key={a.id} className={area===a.id?"active":""} onClick={()=>navigate(a.id,menus[a.id][0].id)}><strong>{a.name}</strong><small>{a.subtitle}</small></button>)}</div>
    <div className="hv-sideDivider"/>
    <div className="hv-nav">{menus[area].map(m=><button key={m.id} className={tab===m.id?"active":""} onClick={()=>navigate(area,m.id)}><span className="hv-navIcon">{m.icon}</span>{m.name}</button>)}</div>
