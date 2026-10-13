@@ -23,7 +23,7 @@ Produção preservada: `main` em `023a399e4ac4a0086543ae6e331afd1e892eda06`.
 
 - Oito testes automatizados de regressão passaram.
 - TypeScript e build Next.js passaram.
-- Desktop 1440 px e celular 390 px: seis rotas responderam 200, sem erro de execução, imagens quebradas ou excesso horizontal.
+- Preview final, desktop 1440 px e celular 390 px: sete rotas responderam 200, sem erro de execução, imagens quebradas ou excesso horizontal.
 - Navegador com respostas de teste interceptadas: acesso de CUSTOMER negado em pacotes, gestão e operação; cotação/data/horários/agendamento; iniciar/pronto/entregar com atendimento como objeto e KM zero; recuperação de senha. Esses testes não gravam no Supabase e não comprovam gravação real.
 - Supabase real, consultas somente de leitura: visitantes enxergam zero clientes, veículos, agendamentos e pagamentos; identidade sem perfil não tem acesso de equipe ou gestão.
 - Funções de agendamento, cancelamento, reagendamento, orçamento, operação e aprovação de pacotes não permitem execução por `anon`.
@@ -37,7 +37,7 @@ Produção preservada: `main` em `023a399e4ac4a0086543ae6e331afd1e892eda06`.
 4. Reagendamento antigo não atualiza a ocupação do box e não usa a duração histórica/pausa da agenda v2. A correção SQL está preparada, mas a interface de reagendamento não foi habilitada contra essa função antiga.
 5. Não há banco de desenvolvimento Supabase. Gravações reais com contas de cliente, recepção, profissional e gestor ainda precisam de validação isolada. Não foram criados clientes, pagamentos ou atendimentos fictícios no banco real.
 6. Recuperação/cadastro por e-mail dependem da configuração de URLs autorizadas e do envio de e-mails no Supabase. O retorno foi validado com interceptação; o envio real ainda não foi executado.
-7. O cadastro exige aceitação de Termos e Política de Privacidade, mas o repositório não contém documentos aprovados nem identificação legal suficiente para redigi-los sem inventar informações.
+7. O cadastro exige aceitação de Termos e Política de Privacidade. Razão social informada pelo usuário: Qualificar Estética Automotiva Ltda. CNPJ ainda não disponível; pode permanecer pendente na homologação. E-mail responsável e documentos aprovados continuam pendentes para produção.
 8. O advisor informa proteção contra senhas vazadas desabilitada. Avaliar a configuração/plano antes da liberação.
 
 O arquivo `docs/sql/release-candidate.sql` é uma proposta de correção; não foi aplicado nem certificado em um banco isolado. Nenhuma alteração persistente foi feita no Supabase de produção. Manter o PR em rascunho até resolver esses bloqueios e obter a validação final do usuário.
