@@ -9,3 +9,4 @@ Rotas previstas após o Preview ficar disponível:
 - `/homologacao/pacotes`: aprovação restrita a perfis de gestão.
 
 Apenas a confirmação **Ready** no painel Deployments da Vercel comprova a publicação. O build do GitHub, isoladamente, não comprova a publicação na Vercel.
+

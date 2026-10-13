@@ -1,18 +1,33 @@
-name: Homologacao build
+name: Homologacao validation
 on:
   pull_request:
     branches: [main]
   push:
     branches: [homologacao-geral]
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: package.json
-      - run: npm install --no-audit --no-fund
-      - run: npm run build
+          node-version: '24'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm typecheck
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Verify browser flows with isolated fixtures
+        run: |
+          pnpm start > /tmp/qualific-estetic-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:3000/homologacao > /dev/null; then break; fi
+            sleep 1
+          done
+          pnpm test:browser

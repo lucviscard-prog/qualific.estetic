@@ -5,7 +5,7 @@ import "./homologacao.css";
 type Area="publico"|"cliente"|"operacao"|"gestao";
 type DemoBooking={id:number;client:string;vehicle:string;plate:string;service:string;day:string;hour:string;status:string;price:number;km?:string};
 type DemoVehicle={id:number;name:string;plate:string;year:string;category:string;color:string;care:string};
-const logo="https://raw.githubusercontent.com/lucviscard-prog/qualific.estetic/main/public/logo-qualificar-correta.webp";
+const logo="/logo-qualificar-correta.webp";
 const price=(n:number)=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n);
 const packages=[{name:"Qualify Express",description:"Cuidado prático para a rotina.",prices:[80,90,100,120],duration:"1h30"},{name:"Qualify Essential",description:"Atenção ampliada ao interior e exterior.",prices:[120,140,180,180],duration:"2h30"},{name:"Qualify Detail",description:"Detalhamento para quem percebe cada acabamento.",prices:[170,190,220,250],duration:"3h30"},{name:"Qualify Prime",description:"Experiência de cuidado e apresentação elevada.",prices:[220,250,300,350],duration:"4h"},{name:"Qualify Hig Fresh",description:"Higienização com foco em renovação.",prices:[500,550,600,700],duration:"Sob avaliação"},{name:"Qualify Hig Clean",description:"Higienização interna aprofundada.",prices:[650,700,750,800],duration:"Sob avaliação"},{name:"Qualify Detail Ext Prime",description:"Tratamento detalhado da parte externa.",prices:[700,750,800,900],duration:"Sob avaliação"},{name:"Qualify Detail In Prime",description:"Cuidado minucioso do habitáculo.",prices:[850,900,950,1000],duration:"Sob avaliação"},{name:"Qualify Detail Ultimate",description:"Experiência completa de estética automotiva.",prices:[1400,1500,1600,1700],duration:"Sob avaliação"}];
 const labels:Record<string,string>={REQUESTED:"Solicitado",CONFIRMED:"Confirmado",CUSTOMER_ARRIVED:"Check-in",IN_SERVICE:"Em serviço",AWAITING_PICKUP:"Pronto",COMPLETED:"Entregue",CANCELLED:"Cancelado"};
@@ -13,34 +13,7 @@ const initialBookings:DemoBooking[]=[{id:101,client:"Lucas (exemplo)",vehicle:"V
 const initialVehicles:DemoVehicle[]=[{id:1,name:"Volkswagen Gol",plate:"ABC1D23",year:"2002",category:"Hatch",color:"Prata",care:"Não sei informar"},{id:2,name:"Nissan Kicks",plate:"JKL2M34",year:"2019",category:"SUV",color:"Branco",care:"Vitrificação: sim"}];
 const initialTasks=["Frente","Traseira","Lateral esquerda","Lateral direita","Interior dianteiro","Interior traseiro","Painel","Rodas","Porta-malas","Pertences","Danos preexistentes"];
 const areas:{id:Area;name:string;subtitle:string}[]=[{id:"publico",name:"Site público",subtitle:"Primeiro contato"},{id:"cliente",name:"Área do cliente",subtitle:"Minha garagem"},{id:"operacao",name:"Operação",subtitle:"Equipe e atendimentos"},{id:"gestao",name:"Gestão",subtitle:"Administração"}];
-const subtitles:Record<string,string>={inicio:"Seu carro merece cuidado sob medida.",pacotes:"Cada detalhe tem seu momento.",sobre:"Estética automotiva de verdade.",contato:"Estamos perto de você.",resumo:"Seu cuidado em um só lugar.",garagem:"Cada veículo, uma história.",agendar:"Reserve seu próximo cuidado.",historico:"Tudo registrado com clareza.",perfil:"Seus dados e preferências.",agenda:"Cada atendimento no seu ritmo.",vistoria:"O veículo documentado da chegada à saída.",logistica:"Retirada e entrega organizadas.",clientes:"Relacionamento construído no detalhe.",catalogo:"Serviços e pacotes organizados.",financeiro:"Uma visão prática dos números.",crm:"Clientes, retornos e oportunidades.",mensagens:"Comunicação alinhada ao atendimento.",configuracoes:"Controle da operação."};
-const menus:Record<Area,{id:string;name:string;icon:string}[]>={
- publico:[{id:"inicio",name:"Início",icon:"⌂"},{id:"pacotes",name:"Pacotes",icon:"✧"},{id:"sobre",name:"Sobre nós",icon:"◎"},{id:"contato",name:"Contato",icon:"↗"}],
- cliente:[{id:"resumo",name:"Visão geral",icon:"▦"},{id:"garagem",name:"Minha garagem",icon:"▤"},{id:"agendar",name:"Agendar",icon:"▣"},{id:"historico",name:"Histórico",icon:"◷"},{id:"perfil",name:"Meu perfil",icon:"♙"}],
- operacao:[{id:"agenda",name:"Agenda",icon:"▦"},{id:"vistoria",name:"Check-in e vistoria",icon:"✓"},{id:"logistica",name:"Logística",icon:"⇄"}],
- gestao:[{id:"clientes",name:"Clientes",icon:"♙"},{id:"catalogo",name:"Catálogo",icon:"▤"},{id:"financeiro",name:"Financeiro",icon:"▥"},{id:"crm",name:"CRM",icon:"◎"},{id:"mensagens",name:"Comunicação",icon:"✉"},{id:"configuracoes",name:"Configurações",icon:"⚙"}]
-};
-function Pill({children,kind="neutral"}:{children:React.ReactNode;kind?:string}){return <span className={"hv-pill "+kind}>{children}</span>}
-function Panel({title,sub,children,className=""}:{title:string;sub?:string;children:React.ReactNode;className?:string}){return <section className={"hv-panel "+className}><div className="hv-panelHead"><h3>{title}</h3>{sub&&<small>{sub}</small>}</div>{children}</section>}
-export default function Homologacao(){
- const [area,setArea]=useState<Area>("publico"),[tab,setTab]=useState("inicio");
- const [bookings,setBookings]=useState(initialBookings),[vehicles,setVehicles]=useState(initialVehicles);
- const [selectedVehicle,setSelectedVehicle]=useState(1),[selectedPack,setSelectedPack]=useState(0),[selectedDay,setSelectedDay]=useState("2026-10-05"),[selectedTime,setSelectedTime]=useState("09:00"),[category,setCategory]=useState(0);
- const [notice,setNotice]=useState(""),[filter,setFilter]=useState(""),[selectedBooking,setSelectedBooking]=useState(101);
- const [checked,setChecked]=useState<string[]>([]),[damage,setDamage]=useState(""),[belongings,setBelongings]=useState(""),[km,setKm]=useState("82450"),[dirt,setDirt]=useState("Média");
- const [images,setImages]=useState<{name:string;url:string;stage:string}[]>([]),[stage,setStage]=useState("Antes");
- const [addVehicle,setAddVehicle]=useState(false),[newName,setNewName]=useState(""),[newPlate,setNewPlate]=useState("");
- const [marketing,setMarketing]=useState(false),[delivery,setDelivery]=useState("Cliente leva o veículo");
- const [crmFilter,setCrmFilter]=useState("Todos"),[catalogSearch,setCatalogSearch]=useState("");
- const [settings,setSettings]=useState({open:"08:00",close:"18:00",box:"Box 01",reminder:true});
- const [messageText,setMessageText]=useState("Olá! Seu veículo está pronto para retirada. Agradecemos pela confiança na Qualificar.");
- const chosen=vehicles.find(v=>v.id===selectedVehicle)||vehicles[0];
- const inspected=bookings.find(b=>b.id===selectedBooking)||bookings[0];
- const summary=useMemo(()=>({total:bookings.length,pending:bookings.filter(b=>b.status==="REQUESTED").length,active:bookings.filter(b=>["CONFIRMED","CUSTOMER_ARRIVED","IN_SERVICE"].includes(b.status)).length,done:bookings.filter(b=>b.status==="COMPLETED").length}),[bookings]);
- function navigate(a:Area,t:string){setArea(a);setTab(t);setNotice("");window.scrollTo({top:0,behavior:"smooth"})}
- function toast(s:string){setNotice(s);window.setTimeout(()=>setNotice(""),5000)}
- function changeStatus(id:number,status:string){setBookings(old=>old.map(b=>b.id===id?{...b,status}:b));toast("Status atualizado nesta demonstração. Nenhum dado real foi alterado.")}
- function addBooking(){const p=packages[selectedPack];const v=chosen;setBookings(old=>[{id:Math.max(...old.map(x=>x.id),100)+1,client:"Lucas (exemplo)",vehicle:v.name,plate:v.plate,service:p.name,day:selectedDay,hour:selectedTime,status:"REQUESTED",price:p.prices[category]},...old]);navigate("cliente","historico");toast("Agendamento demonstrativo criado com sucesso.")}
+const subtitles:Record<string,string>={inicio:"Seu carro merece cuidado sob medida.",pacotes:"Cada detalhe tem seu momento.",sobre:"Estética automotiva de verdade.",contato:"Estamos perto de você.",resumo:"Seu cuidado em um só lugar.",garagem:"Cada veículo, uma história.",agendar:"Reserve seu próximo cuidado.",historico:"Tudo registrado com clareza.",perfil:"Seus dados e preferências.",agenda:"Cada atendimento no seu ritmo.",vistoria:"O veículo documentado da chegada à saída.",logistica:"Retirada e entrega organizadas.",clientes:"R…1102 tokens truncated…ativo criado com sucesso.")}
  function saveVehicle(){if(!newName.trim()||!newPlate.trim())return toast("Informe o nome e a placa do veículo.");const id=Math.max(...vehicles.map(v=>v.id))+1;setVehicles(old=>[...old,{id,name:newName,plate:newPlate.toUpperCase(),year:"2024",category:"A definir",color:"A definir",care:"Não sei informar"}]);setSelectedVehicle(id);setNewName("");setNewPlate("");setAddVehicle(false);toast("Veículo adicionado à garagem demonstrativa.")}
  function photoChange(files:FileList|null){if(!files)return;const next=Array.from(files).filter(f=>f.type.startsWith("image/")).map(f=>({name:f.name,url:URL.createObjectURL(f),stage}));setImages(old=>[...old,...next]);toast("Prévia local adicionada. Nesta homologação as fotos não são enviadas ao banco.")}
  const nav=(a:Area,t:string,label:string,alt=false)=><button type="button" className={alt?"hv-outline":"hv-button"} onClick={()=>navigate(a,t)}>{label} <span aria-hidden>↗</span></button>;
@@ -81,3 +54,4 @@ export default function Homologacao(){
   </main>
  </div>;
 }
+
